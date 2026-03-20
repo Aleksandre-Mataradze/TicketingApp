@@ -1,5 +1,8 @@
+using Application.Features.UserFeatures;
+using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Persistance;
+using Persistance.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<TicketingAppDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<UserFeatures>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
