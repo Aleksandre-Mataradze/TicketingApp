@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistance.Repositories;
 
-public class UserRepository(TicketingAppDBContext _dbContext) : IUserRepository
+public class UserRepository(TicketingAppDBContext _dbContext) : IUserDetailsRepository
 {
     public async Task<bool> AddUserAsync(User user)
     {
@@ -28,9 +28,15 @@ public class UserRepository(TicketingAppDBContext _dbContext) : IUserRepository
 
         return result!;
     }
-    
-    public Task<bool> UpdateUserAsync(User user)
+
+    public async Task<bool> UpdateUserAsync(string userName, UserDto user)
     {
-        throw new NotImplementedException();
+        var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == user.name);
+
+        existingUser!.Name = userName;
+
+        int result = await _dbContext.SaveChangesAsync();
+
+        return result >= 1 ? true : false;
     }
 }

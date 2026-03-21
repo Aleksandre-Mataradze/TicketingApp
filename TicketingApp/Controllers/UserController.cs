@@ -1,5 +1,6 @@
 ﻿using Application.DTOs;
 using Application.Features.UserFeatures;
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TicketingApp.Controllers;
@@ -27,6 +28,13 @@ public class UserController(UserFeatures userFeatures) : ControllerBase
     {
         var result = await userFeatures.GetUsersAsync();
 
+        return Ok(result);
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<bool>> UpdateUserAsync(string userName, UserDto user)
+    {
+        var result = await userFeatures.UpdateUserAsync(userName, user);
         return Ok(result);
     }
 }

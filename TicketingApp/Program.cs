@@ -17,7 +17,7 @@ builder.Services.AddDbContext<TicketingAppDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<UserFeatures>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserDetailsRepository, UserRepository>();
 
 var app = builder.Build();
 
