@@ -3,7 +3,7 @@ using Domain.Models;
 
 namespace Application.Interfaces;
 
-public interface IUserDetailsRepository
+public interface IUserRepository
 {
     public Task<bool> AddUserAsync(User user);
     public Task<User> GetUserAsync(string username);

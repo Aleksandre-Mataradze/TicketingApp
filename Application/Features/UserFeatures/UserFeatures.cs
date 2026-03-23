@@ -4,7 +4,7 @@ using Domain.Models;
 
 namespace Application.Features.UserFeatures;
 
-public class UserFeatures(IUserDetailsRepository userRepository)
+public class UserFeatures(IUserRepository userRepository)
 {
     public async Task<bool> AddUserAsync(UserDto user)
     {
