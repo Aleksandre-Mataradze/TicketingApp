@@ -1,10 +1,12 @@
 ﻿using Application.DTOs;
 using Application.Features.UserFeatures;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TicketingApp.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class UserController(UserFeatures userFeatures) : ControllerBase
