@@ -1,13 +1,19 @@
 using Application.Features.AuthFeatures;
 using Application.Features.CategoryFeatures;
 using Application.Features.UserFeatures;
+using Application.Features.VenueFeatures;
+using Application.Features.EventFeatures;
 using Application.Interfaces;
+using Application.Interfaces.IVenueRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Persistance;
 using Persistance.Repositories;
+using Persistance.Repositories.VenueRepositories;
 using System.Text;
+using Application.Interfaces.IEventRespository;
+using Persistance.Repositories.EventRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +67,10 @@ builder.Services.AddScoped<UserFeatures>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<CategoryFeatures>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepositories>();
+builder.Services.AddScoped<VenueFeatures>();
+builder.Services.AddScoped<IVenueRepository, VenueRepository>();
+builder.Services.AddScoped<EventFeatures>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
 
 var app = builder.Build();
 

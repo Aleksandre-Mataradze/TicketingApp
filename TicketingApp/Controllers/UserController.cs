@@ -12,9 +12,11 @@ namespace TicketingApp.Controllers;
 public class UserController(UserFeatures userFeatures) : ControllerBase
 {
     [HttpPost]
-    public async Task<bool> AddUserAsync(UserDto user)
+    public async Task<ActionResult<bool>> AddUserAsync(UserDto user)
     {
-        return await userFeatures.AddUserAsync(user);
+        var result = await userFeatures.AddUserAsync(user);
+
+        return Ok(result);
     }
 
     [HttpGet("{username}")]

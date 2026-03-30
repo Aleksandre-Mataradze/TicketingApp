@@ -19,11 +19,29 @@ public class CategoryRepositories(TicketingAppDBContext _dbContext) : ICategoryR
     {
         var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Name == name);
 
+        if (category == null)
+        {
+            
+        }
+
         category.DeletedAt = DateTime.UtcNow;
 
         var result = await _dbContext.SaveChangesAsync();
 
         return result >= 1 ? true : false;
+    }
+    public async Task<Category> GetCategoryAsync(string name)
+    {
+        var result = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Name == name);
+
+        if (result == null)
+        {
+            return null!;
+        }
+        else
+        {
+            return result;
+        }
     }
 
     public async Task<IReadOnlyList<Category>> GetAllCategoryAsync()

@@ -9,6 +9,7 @@ public class Event : Base<Guid>
     public DateTime Date { get; set; }
     public string? ImageUrl { get; set; }
     public int CategoryId { get; set; }
+    public Category? Category { get; set; }
     public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     public Venue Venue { get; set; } = new Venue();
 }

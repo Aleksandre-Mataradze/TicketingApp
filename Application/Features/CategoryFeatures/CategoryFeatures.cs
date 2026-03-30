@@ -26,7 +26,6 @@ public class CategoryFeatures(ICategoryRepository categoryRepository)
             return result;
         }
     }
-
     public async Task<IReadOnlyList<CategoryDto>> GetAllCategoryAsync()
     {
         IReadOnlyList<Category> categories = await categoryRepository.GetAllCategoryAsync();
