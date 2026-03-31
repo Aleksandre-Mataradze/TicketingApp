@@ -1,6 +1,5 @@
 ﻿using Application.DTOs.EventDtos;
 using Application.Features.EventFeatures;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TicketingApp.Controllers.EventController;

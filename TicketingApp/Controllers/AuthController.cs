@@ -30,6 +30,7 @@ public class AuthController(IConfiguration _configuration, UserAuthFeatures user
 
         var claimsForToken = new List<Claim>()
         {
+            new Claim("UserId", user.Id.ToString()),
             new Claim("Name", user.Name),
             new Claim("FirstName", user.FirstName),
             new Claim("LastName", user.LastName),

@@ -14,6 +14,9 @@ using Persistance.Repositories.VenueRepositories;
 using System.Text;
 using Application.Interfaces.IEventRespository;
 using Persistance.Repositories.EventRepositories;
+using Application.Features.TicketFeatures;
+using Application.Interfaces.ITicketRepository;
+using Persistance.Repositories.TicketRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +74,8 @@ builder.Services.AddScoped<VenueFeatures>();
 builder.Services.AddScoped<IVenueRepository, VenueRepository>();
 builder.Services.AddScoped<EventFeatures>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<TicketFeatures>();
+builder.Services.AddScoped<ITicketRepository, TicketRepostiroy>();
 
 var app = builder.Build();
 

@@ -9,6 +9,7 @@ public class User : Base<int>
     public string LastName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+    public bool Admin { get; set; } = false;
     public UserDetails UserDetails { get; set; } = new UserDetails();
-    public ICollection<Order> Orders = new List<Order>();
+    public List<Ticket> Tickets = new List<Ticket>();
 }
