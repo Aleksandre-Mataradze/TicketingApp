@@ -1,4 +1,5 @@
-﻿using Application.DTOs.TicketDtos;
+﻿using Application.Common;
+using Application.DTOs.TicketDtos;
 using Application.Interfaces.ITicketRepository;
 using Domain.Models;
 
@@ -6,11 +7,11 @@ namespace Application.Features.TicketFeatures;
 
 public class TicketFeatures(ITicketRepository _ticketRepository) 
 {
-    public async Task<bool> AddTicketAsync(TicketCreateDTO ticket, int userId)
+    public async Task<Result<bool>> AddTicketAsync(TicketCreateDTO ticket, int userId)
     {
         if (ticket == null)
         {
-            return false;
+            return Result<bool>.Fail("An errored while purchasing a ticket,");
         }
         else
         {
@@ -23,18 +24,22 @@ public class TicketFeatures(ITicketRepository _ticketRepository)
                 UserId = userId
             };
 
-            return await _ticketRepository.AddTicketAsync(tempTicket);
+            var result = await _ticketRepository.AddTicketAsync(tempTicket);
+
+            return Result<bool>.Ok(result);
         }
     }
-    public async Task<bool> DeactivateTicketAsync(Guid id)
+    public async Task<Result<bool>> DeactivateTicketAsync(Guid id)
     {
         if (id == Guid.Empty)
         {
-            return false;
+            return Result<bool>.Fail("An error occured while deactivating ticket.");
         }
         else
         {
-            return await _ticketRepository.DeactiveTicketAsync(id);
+            var result = await _ticketRepository.DeactiveTicketAsync(id);
+
+            return Result<bool>.Ok(result);
         }
     }
 }

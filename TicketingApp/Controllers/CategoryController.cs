@@ -1,4 +1,5 @@
-﻿using Application.DTOs;
+﻿using Application.Common;
+using Application.DTOs;
 using Application.Features.CategoryFeatures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,27 +12,28 @@ namespace TicketingApp.Controllers;
 public class CategoryController(CategoryFeatures categoryFeatures) : ControllerBase
 {
     [HttpPost]
-    public async Task<bool> AddCategoryAsync(CategoryDto category)
+    public async Task<Result<bool>> AddCategoryAsync(CategoryDto category)
     {
         var result = await categoryFeatures.AddCategoryAsync(category);
         return result;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<CategoryDto>>> GetAllCategoryAsync()
+    public async Task<Result<IReadOnlyList<CategoryDto>>> GetAllCategoryAsync()
     {
         var result = await categoryFeatures.GetAllCategoryAsync();
-        return Ok(result);
+
+        return result;
     }
     [HttpDelete]
-    public async Task<bool> DeleteCategory(string name)
+    public async Task<Result<bool>> DeleteCategory(string name)
     {
         var result = await categoryFeatures.DeleteCategoryAsync(name);
 
         return result;
     }
     [HttpPut]
-    public async Task<bool> UpdateCategory(string name, CategoryDto category)
+    public async Task<Result<bool>> UpdateCategory(string name, CategoryDto category)
     {
         var result = await categoryFeatures.UpdateCategoryAsync(name, category);
 

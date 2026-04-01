@@ -1,4 +1,5 @@
-﻿using Application.DTOs.VenueDtos;
+﻿using Application.Common;
+using Application.DTOs.VenueDtos;
 using Application.Features.VenueFeatures;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,38 +10,38 @@ namespace TicketingApp.Controllers.VenueController;
 public class VenueController(VenueFeatures _venueFeatures) : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<bool>> AddVenueAsync(VenueDto venue)
+    public async Task<Result<bool>> AddVenueAsync(VenueDto venue)
     {
         var result = await _venueFeatures.AddVenueAsync(venue);
 
-        return Ok(result);
+        return result;
     }
     [HttpGet("{name}")]
-    public async Task<ActionResult<VenueDto>> GetVenueAsync(string name)
+    public async Task<Result<VenueDto>> GetVenueAsync(string name)
     {
         var result = await _venueFeatures.GetVenueAsync(name);
 
-        return Ok(result);
+        return result;
     }
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<VenueDto>>> GetAllVenueAsync()
+    public async Task<Result<IReadOnlyList<VenueDto>>> GetAllVenueAsync()
     {
         var result = await _venueFeatures.GetAllVenueAsync();
 
-        return Ok(result);
+        return result;
     }
     [HttpPut]
-    public async Task<ActionResult<bool>> UpdateVenueAsync(string name, VenueDto venue)
+    public async Task<Result<bool>> UpdateVenueAsync(string name, VenueDto venue)
     {
         var result = await _venueFeatures.UpdateVenueAsync(name, venue);
 
-        return Ok(result);
+        return result;
     }
     [HttpDelete]
-    public async Task<ActionResult<bool>> DeleteVenueAsync(string name)
+    public async Task<Result<bool>> DeleteVenueAsync(string name)
     {
         var result = await _venueFeatures.DeleteVenueAsync(name);
         
-        return Ok(result);
+        return result;
     }
 }

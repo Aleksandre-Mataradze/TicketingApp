@@ -1,4 +1,5 @@
-﻿using Application.DTOs;
+﻿using Application.Common;
+using Application.DTOs;
 using Application.Features.UserFeatures;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,33 +14,33 @@ public class UserController(UserFeatures userFeatures) : ControllerBase
 {
     [AllowAnonymous]
     [HttpPost]
-    public async Task<ActionResult<bool>> AddUserAsync(UserCreationDto user)
+    public async Task<Result<bool>> AddUserAsync(UserCreationDto user)
     {
         var result = await userFeatures.AddUserAsync(user);
 
-        return Ok(result);
+        return result;
     }
 
     [HttpGet("{username}")]
-    public async Task<ActionResult<UserDto>> GetUserAsync(string username)
+    public async Task<Result<UserDto>> GetUserAsync(string username)
     {
         var result = await userFeatures.GetUserAsync(username);
 
-        return Ok(result);
+        return result;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<UserDto>>> GetAllUserAsync()
+    public async Task<Result<IReadOnlyList<UserDto>>> GetAllUserAsync()
     {
         var result = await userFeatures.GetUsersAsync();
 
-        return Ok(result);
+        return result;
     }
 
     [HttpPut]
-    public async Task<ActionResult<bool>> UpdateUserAsync(string userName, UserDto user)
+    public async Task<Result<bool>> UpdateUserAsync(string userName, UserDto user)
     {
         var result = await userFeatures.UpdateUserAsync(userName, user);
-        return Ok(result);
+        return result;
     }
 }

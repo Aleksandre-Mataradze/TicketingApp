@@ -1,4 +1,5 @@
-﻿using Application.DTOs;
+﻿using Application.Common;
+using Application.DTOs;
 using Application.Interfaces;
 using Domain.Models;
 
@@ -6,11 +7,11 @@ namespace Application.Features.CategoryFeatures;
 
 public class CategoryFeatures(ICategoryRepository categoryRepository)
 {
-    public async Task<bool> AddCategoryAsync(CategoryDto category)
+    public async Task<Result<bool>> AddCategoryAsync(CategoryDto category)
     {
         if (category == null)
         {
-            return false;
+            return Result<bool>.Fail("Error occured when creating a new category.");
         }
         else
         {
@@ -23,31 +24,31 @@ public class CategoryFeatures(ICategoryRepository categoryRepository)
 
             bool result = await categoryRepository.AddCategoryAsync(temp);
 
-            return result;
+            return Result<bool>.Ok(result);
         }
     }
-    public async Task<IReadOnlyList<CategoryDto>> GetAllCategoryAsync()
+    public async Task<Result<IReadOnlyList<CategoryDto>>> GetAllCategoryAsync()
     {
         IReadOnlyList<Category> categories = await categoryRepository.GetAllCategoryAsync();
 
         if (categories == null || categories.Count == 0)
         {
-            return null;
+            return Result<IReadOnlyList<CategoryDto>>.Fail("An error occured when requesting category list.");
         }
         else
         {
-            IReadOnlyList<CategoryDto> categoryDtos = categories.Where(c => c.DeletedAt == null).Select(c => new CategoryDto(c.Name, c.Description, c.IconUrl)
+            var categoryDtos = categories.Where(c => c.DeletedAt == null).Select(c => new CategoryDto(c.Name, c.Description, c.IconUrl)
             {
             }).ToList();
 
-            return categoryDtos;
+            return Result<IReadOnlyList<CategoryDto>>.Ok(categoryDtos);
         }
     }
-    public async Task<bool> DeleteCategoryAsync(string name)
+    public async Task<Result<bool>> DeleteCategoryAsync(string name)
     {
         if (name == null)
         {
-            return false;
+            return Result<bool>.Fail("Input value was not valid.");
         }
         else
         {
@@ -55,25 +56,25 @@ public class CategoryFeatures(ICategoryRepository categoryRepository)
 
             if (response == false)
             {
-                return false;
+                return Result<bool>.Fail("An error occured while deleting category");
             }
             else
             {
-                return response;
+                return Result<bool>.Ok(response);
             }
         }
     }
-    public async Task<bool> UpdateCategoryAsync(string name, CategoryDto category)
+    public async Task<Result<bool>> UpdateCategoryAsync(string name, CategoryDto category)
     {
         if (name == null || name == "" || category == null)
         {
-            return false;
+            return Result<bool>.Fail("Category name or new category information was not filled correctly!");
         }
         else
         {
             var result = await categoryRepository.UpdateCategoryAsync(name, category);
 
-            return result;
+            return Result<bool>.Ok(result);
         }
     }
 }

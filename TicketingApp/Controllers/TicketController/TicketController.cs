@@ -1,4 +1,5 @@
-﻿using Application.DTOs.TicketDtos;
+﻿using Application.Common;
+using Application.DTOs.TicketDtos;
 using Application.Features.TicketFeatures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,17 +13,19 @@ namespace TicketingApp.Controllers.TicketController;
 public class TicketController(TicketFeatures _ticketFeatures) : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<bool>> AddTicketsAsync(TicketCreateDTO ticket)
+    public async Task<Result<bool>> AddTicketsAsync(TicketCreateDTO ticket)
     {
         var userId = User.FindFirst("UserId")?.Value;
 
-        var result = await _ticketFeatures.AddTicketAsync(ticket, int.Parse(userId));
-        return Ok(result);
+        var result = await _ticketFeatures.AddTicketAsync(ticket, int.Parse(userId!));
+        
+        return result;
     }
     [HttpPut]
-    public async Task<ActionResult<bool>> DeactivateTicketAsync(Guid id)
+    public async Task<Result<bool>> DeactivateTicketAsync(Guid id)
     {
         var result = await _ticketFeatures.DeactivateTicketAsync(id);
-        return Ok(result);
+
+        return result;
     }
 }

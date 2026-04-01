@@ -1,4 +1,5 @@
-﻿using Application.DTOs.EventDtos;
+﻿using Application.Common;
+using Application.DTOs.EventDtos;
 using Application.Features.EventFeatures;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,34 +10,34 @@ namespace TicketingApp.Controllers.EventController;
 public class EventController(EventFeatures _eventFeatures) : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<bool>> AddEventAsync(EventCreateDto eventCreate)
+    public async Task<Result<bool>> AddEventAsync(EventCreateDto eventCreate)
     {
         var result = await _eventFeatures.AddEventAsync(eventCreate);
 
-        return Ok(result);
+        return result;
     }
     [HttpGet("{title}")]
-    public async Task<ActionResult<EventDto>> GetEventAsync(string title)
+    public async Task<Result<EventDto>> GetEventAsync(string title)
     {
         var result = await _eventFeatures.GetEventAsync(title);
-        return Ok(result);
+        return result;
     }
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<EventDto>>> GetAllEventAsync()
+    public async Task<Result<IReadOnlyList<EventDto>>> GetAllEventAsync()
     {
         var result = await _eventFeatures.GetAllEventAsync();
-        return Ok(result);
+        return result;
     }
     [HttpPut]
-    public async Task<ActionResult<bool>> UpdateEventAsync(string title, EventDto eventDto)
+    public async Task<Result<bool>> UpdateEventAsync(string title, EventDto eventDto)
     {
         var result = await _eventFeatures.UpdateEventAsync(title, eventDto);
-        return Ok(result);
+        return result;
     }
     [HttpDelete]
-    public async Task<ActionResult<bool>> DeleteEventAsync(string title)
+    public async Task<Result<bool>> DeleteEventAsync(string title)
     {
         var result = await _eventFeatures.DeleteEventAsync(title);
-        return Ok(result);
+        return result;
     }
 }
