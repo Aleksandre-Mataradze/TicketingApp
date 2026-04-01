@@ -11,8 +11,9 @@ namespace TicketingApp.Controllers;
 [Route("api/[controller]")]
 public class UserController(UserFeatures userFeatures) : ControllerBase
 {
+    [AllowAnonymous]
     [HttpPost]
-    public async Task<ActionResult<bool>> AddUserAsync(UserDto user)
+    public async Task<ActionResult<bool>> AddUserAsync(UserCreationDto user)
     {
         var result = await userFeatures.AddUserAsync(user);
 

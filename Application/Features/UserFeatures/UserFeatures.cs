@@ -1,12 +1,13 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
 using Domain.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.Features.UserFeatures;
 
-public class UserFeatures(IUserRepository userRepository)
+public class UserFeatures(IUserRepository userRepository, IPasswordHasher<User> passwordHasher)
 {
-    public async Task<bool> AddUserAsync(UserDto user)
+    public async Task<bool> AddUserAsync(UserCreationDto user)
     {
         if (user == null)
         {
@@ -19,8 +20,12 @@ public class UserFeatures(IUserRepository userRepository)
                 Name = user.name,
                 FirstName = user.firstName,
                 LastName = user.lastName,
-                Email = user.email
+                Email = user.email,
+                Password = user.password
             };
+
+            temp.Password = passwordHasher.HashPassword(temp, temp.Password);
+
             bool result = await userRepository.AddUserAsync(temp);
 
             return result;

@@ -1,22 +1,24 @@
 using Application.Features.AuthFeatures;
 using Application.Features.CategoryFeatures;
+using Application.Features.EventFeatures;
+using Application.Features.TicketFeatures;
 using Application.Features.UserFeatures;
 using Application.Features.VenueFeatures;
-using Application.Features.EventFeatures;
 using Application.Interfaces;
+using Application.Interfaces.IEventRespository;
+using Application.Interfaces.ITicketRepository;
 using Application.Interfaces.IVenueRepository;
+using Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Persistance;
 using Persistance.Repositories;
+using Persistance.Repositories.EventRepositories;
+using Persistance.Repositories.TicketRepository;
 using Persistance.Repositories.VenueRepositories;
 using System.Text;
-using Application.Interfaces.IEventRespository;
-using Persistance.Repositories.EventRepositories;
-using Application.Features.TicketFeatures;
-using Application.Interfaces.ITicketRepository;
-using Persistance.Repositories.TicketRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,6 +70,7 @@ builder.Services.AddScoped<UserAuthFeatures>();
 builder.Services.AddScoped<IUserAuthRepository, UserAuthRepository>();
 builder.Services.AddScoped<UserFeatures>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<CategoryFeatures>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepositories>();
 builder.Services.AddScoped<VenueFeatures>();

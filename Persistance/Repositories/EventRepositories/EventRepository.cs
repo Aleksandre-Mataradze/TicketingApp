@@ -50,7 +50,7 @@ public class EventRepository(TicketingAppDBContext _dbContext) : IEventRepositor
     }
     public async Task<Event> GetEventAsync(string title)
     {
-        var result = await _dbContext.Events.Include(e => e.Category).Include(e => e.Venue).Where(e => e.DeletedAt == null).FirstOrDefaultAsync(e => e.Title == title);
+        var result = await _dbContext.Events.Where(v => v.DeletedAt == null).Include(e => e.Category).Include(e => e.Venue).Where(e => e.DeletedAt == null).FirstOrDefaultAsync(e => e.Title == title);
 
         return result!;
     }

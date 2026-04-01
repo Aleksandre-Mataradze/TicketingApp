@@ -1,0 +1,37 @@
+[
+  {
+    "name": "jdoe",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "password": "Pass123!"
+  },
+  {
+    "name": "asmith",
+    "firstName": "Anna",
+    "lastName": "Smith",
+    "email": "anna.smith@example.com",
+    "password": "Secure456#"
+  },
+  {
+    "name": "mbrown",
+    "firstName": "Michael",
+    "lastName": "Brown",
+    "email": "michael.brown@example.com",
+    "password": "MyPass789$"
+  },
+  {
+    "name": "lwilson",
+    "firstName": "Laura",
+    "lastName": "Wilson",
+    "email": "laura.wilson@example.com",
+    "password": "Wilson321@"
+  },
+  {
+    "name": "dlee",
+    "firstName": "David",
+    "lastName": "Lee",
+    "email": "david.lee@example.com",
+    "password": "LeePass654%"
+  }
+]

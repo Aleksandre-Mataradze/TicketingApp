@@ -32,7 +32,7 @@ public class CategoryRepositories(TicketingAppDBContext _dbContext) : ICategoryR
     }
     public async Task<Category> GetCategoryAsync(string name)
     {
-        var result = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Name == name);
+        var result = await _dbContext.Categories.Where(v => v.DeletedAt == null).FirstOrDefaultAsync(c => c.Name == name);
 
         if (result == null)
         {
@@ -43,10 +43,9 @@ public class CategoryRepositories(TicketingAppDBContext _dbContext) : ICategoryR
             return result;
         }
     }
-
     public async Task<IReadOnlyList<Category>> GetAllCategoryAsync()
     {
-        var categoryList = await _dbContext.Categories.ToListAsync();
+        var categoryList = await _dbContext.Categories.Where(v => v.DeletedAt == null).ToListAsync();
 
         return categoryList;
     }
