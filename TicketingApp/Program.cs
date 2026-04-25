@@ -56,16 +56,29 @@ builder.Services.AddDbContext<TicketingAppDBContext>(options =>
 
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
 {
-options.TokenValidationParameters = new TokenValidationParameters()
-{
-    ValidateIssuer = true,
-    ValidateAudience = true,
-    ValidateIssuerSigningKey = true,
-    ValidIssuer = builder.Configuration["Authentification:Issuer"],
-    ValidAudience = builder.Configuration["Authentification:Audience"],
-    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Authentification:SecretKeyFor"]!))
-};
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Authentification:Issuer"],
+        ValidAudience = builder.Configuration["Authentification:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Authentification:SecretKeyFor"]!)),
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
 });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendUI", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") // Your Angular/React URL
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddScoped<UserAuthFeatures>();
 builder.Services.AddScoped<IUserAuthRepository, UserAuthRepository>();
 builder.Services.AddScoped<UserFeatures>();
@@ -90,6 +103,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("FrontendUI");
 
 app.UseAuthorization();
 

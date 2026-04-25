@@ -49,7 +49,6 @@ public class CategoryRepositories(TicketingAppDBContext _dbContext) : ICategoryR
 
         return categoryList;
     }
-
     public async Task<bool> UpdateCategoryAsync(string name, CategoryDto category)
     {
         var existingCategory = await _dbContext.Categories.Where(c => c.DeletedAt == null).FirstOrDefaultAsync(c => c.Name == name);

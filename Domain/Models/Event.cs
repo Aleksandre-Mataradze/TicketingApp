@@ -8,6 +8,7 @@ public class Event : Base<Guid>
     public required string Description { get; set; }
     public DateTime Date { get; set; }
     public string? ImageUrl { get; set; }
+    public decimal Price { get; set; }
     public int CategoryId { get; set; }
     public Category? Category { get; set; }
     public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();

@@ -1,4 +1,5 @@
 ﻿using Application.AuthentificationRequestBody;
+using Application.Common;
 using Application.Features.AuthFeatures;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,13 @@ public class AuthController(IConfiguration _configuration, UserAuthFeatures user
 {
 
     [HttpPost]
-    public async Task<ActionResult<string>> Authentificate(AuthentificationRequestBody requestBody)
+    public async Task<Result<string>> Authentificate(AuthentificationRequestBody requestBody)
     {
         var user = await ValidateUserCredentials(requestBody.Email, requestBody.Password);
 
-        if (user == null)
+        if (user == null || user.Success == false)
         {
-            return Unauthorized();
+            return Result<string>.Fail("User not found or entered incorrect credentials.");
         }
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentification:SecretKeyFor"]));
@@ -30,11 +31,12 @@ public class AuthController(IConfiguration _configuration, UserAuthFeatures user
 
         var claimsForToken = new List<Claim>()
         {
-            new Claim("UserId", user.Id.ToString()),
-            new Claim("Name", user.Name),
-            new Claim("FirstName", user.FirstName),
-            new Claim("LastName", user.LastName),
-            new Claim("Email", user.Email)
+            new Claim("UserId", user.Value.Id.ToString()),
+            new Claim("Name", user.Value.Name ?? "Unknown"),
+            new Claim("FirstName", user.Value.FirstName ?? ""),
+            new Claim("LastName", user.Value.LastName ?? ""),
+            new Claim("Email", user.Value.Email ?? ""),
+            new Claim("Admin", user.Value.Admin.ToString())
         };
 
         var jwtSecurityToken = new JwtSecurityToken(
@@ -48,10 +50,10 @@ public class AuthController(IConfiguration _configuration, UserAuthFeatures user
 
         var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
-        return Ok(tokenToReturn);
+        return Result<string>.Ok(tokenToReturn);
     }
 
-    private Task<User> ValidateUserCredentials(string name, string password)
+    private Task<Result<User>> ValidateUserCredentials(string name, string password)
     {
         return userAuthFeatures.GetUserAuthCredentialsAsync(name, password);
     }

@@ -1,4 +1,5 @@
-﻿using Application.DTOs;
+﻿using Application.Common;
+using Application.DTOs;
 using Application.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
@@ -8,13 +9,13 @@ namespace Application.Features.AuthFeatures;
 public class UserAuthFeatures(IUserAuthRepository _userAuthRepository, IPasswordHasher<User> passwordHasher)
 {
 
-    public async Task<User> GetUserAuthCredentialsAsync(string name, string password)
+    public async Task<Result<User>> GetUserAuthCredentialsAsync(string name, string password)
     {
 
 
         if (name == null || name == string.Empty || name == "")
         {
-            return null;
+            return Result<User>.Fail("There was not input.");
         }
         else
         {
@@ -23,7 +24,7 @@ public class UserAuthFeatures(IUserAuthRepository _userAuthRepository, IPassword
 
             if (user == null)
             {
-                return null;
+                return Result<User>.Fail("User not found.");
             }
             else
             {
@@ -31,11 +32,11 @@ public class UserAuthFeatures(IUserAuthRepository _userAuthRepository, IPassword
 
                 if (verifyResult == PasswordVerificationResult.Success)
                 {
-                    return user;
+                    return Result<User>.Ok(user);
                 }
                 else
                 {
-                    return null;
+                    return Result<User>.Fail("Password is incorrect!");
                 }
             }
         }

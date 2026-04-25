@@ -47,7 +47,7 @@ public class EventFeatures(IEventRepository _eventRepository, ICategoryRepositor
         {
             var result = await _eventRepository.GetEventAsync(title);
 
-            var tempEvent =  new EventDto(result.Title, result.Description, result.Date, result.ImageUrl ?? string.Empty, result.Venue.DeletedAt != null ? "" : result.Venue.Name, result.Category!.DeletedAt != null ? "" : result.Category.Name);
+            var tempEvent =  new EventDto(result.Title, result.Description, result.Price, result.Date, result.ImageUrl ?? string.Empty, result.Venue.DeletedAt != null ? "" : result.Venue.Name, result.Category!.DeletedAt != null ? "" : result.Category.Name);
 
             return Result<EventDto>.Ok(tempEvent);
         }
@@ -62,7 +62,7 @@ public class EventFeatures(IEventRepository _eventRepository, ICategoryRepositor
         else
         {
 
-            var eventDtos = events.Select(e => new EventDto(e.Title, e.Description, e.Date, e.ImageUrl ?? string.Empty, e.Venue.DeletedAt != null ? "" : e.Venue.Name, e.Category!.DeletedAt != null ? "" : e.Category.Name)).ToList();
+            var eventDtos = events.Where(e => e.DeletedAt == null).Select(e => new EventDto(e.Title, e.Description, e.Price, e.Date, e.ImageUrl ?? string.Empty, e.Venue.DeletedAt != null ? "" : e.Venue.Name, e.Category!.DeletedAt != null ? "" : e.Category.Name)).ToList();
             return Result<IReadOnlyList<EventDto>>.Ok(eventDtos);   
         }
     }
@@ -90,6 +90,21 @@ public class EventFeatures(IEventRepository _eventRepository, ICategoryRepositor
             var result = await _eventRepository.DeleteEventAsync(title);
 
             return Result<bool>.Ok(result);
+        }
+    }
+    public async Task<Result<IReadOnlyList<EventDto>>> GetAllEventByCategoryAsync(string categoryName)
+    {
+        var eventList = await _eventRepository.GetAllEventAsync();
+
+        if (eventList == null || eventList.Count == 0)
+        {
+            return Result<IReadOnlyList<EventDto>>.Fail("An error occured while requesting event list.");
+        }
+        else
+        {
+            var eventDtos = eventList.Where(e => e.Category!.Name == categoryName && e.DeletedAt == null).Select(e => new EventDto(e.Title, e.Description, e.Price, e.Date, e.ImageUrl ?? string.Empty, e.Venue.DeletedAt != null ? "" : e.Venue.Name, e.Category!.DeletedAt != null ? "" : e.Category.Name)).ToList();
+
+            return Result<IReadOnlyList<EventDto>>.Ok(eventDtos);
         }
     }
 }

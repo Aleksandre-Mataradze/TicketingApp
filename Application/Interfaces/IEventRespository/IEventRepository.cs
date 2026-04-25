@@ -1,4 +1,5 @@
-﻿using Application.DTOs.EventDtos;
+﻿using Application.Common;
+using Application.DTOs.EventDtos;
 using Domain.Models;
 
 namespace Application.Interfaces.IEventRespository;

@@ -1,10 +1,12 @@
 ﻿using Application.Common;
 using Application.DTOs.EventDtos;
 using Application.Features.EventFeatures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TicketingApp.Controllers.EventController;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class EventController(EventFeatures _eventFeatures) : ControllerBase
@@ -16,12 +18,14 @@ public class EventController(EventFeatures _eventFeatures) : ControllerBase
 
         return result;
     }
+    [AllowAnonymous]
     [HttpGet("{title}")]
     public async Task<Result<EventDto>> GetEventAsync(string title)
     {
         var result = await _eventFeatures.GetEventAsync(title);
         return result;
     }
+    [AllowAnonymous]
     [HttpGet]
     public async Task<Result<IReadOnlyList<EventDto>>> GetAllEventAsync()
     {
@@ -38,6 +42,14 @@ public class EventController(EventFeatures _eventFeatures) : ControllerBase
     public async Task<Result<bool>> DeleteEventAsync(string title)
     {
         var result = await _eventFeatures.DeleteEventAsync(title);
+        return result;
+    }
+    [AllowAnonymous]
+    [HttpGet("category/{categoryName}")]
+    public async Task<Result<IReadOnlyList<EventDto>>> GetEventByCategoryAsync(string categoryName)
+    {
+        var result = await _eventFeatures.GetAllEventByCategoryAsync(categoryName);
+
         return result;
     }
 }

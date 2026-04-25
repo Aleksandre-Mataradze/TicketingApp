@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TicketingApp.Controllers;
 
-[Authorize]
+//[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CategoryController(CategoryFeatures categoryFeatures) : ControllerBase

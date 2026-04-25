@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.DTOs.AdminDtos;
 using Application.Interfaces;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -28,9 +29,25 @@ public class UserRepository(TicketingAppDBContext _dbContext) : IUserRepository
     }
     public async Task<bool> UpdateUserAsync(string userName, UserDto user)
     {
-        var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == user.name);
+        var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
 
-        existingUser!.Name = userName;
+        existingUser!.Name = user.name;
+        existingUser.FirstName = user.firstName;
+        existingUser.LastName = user.lastName;
+        existingUser.Email = user.email;
+        existingUser.Admin = existingUser.Admin;
+
+
+        int result = await _dbContext.SaveChangesAsync();
+
+        return result >= 1 ? true : false;
+    }
+    public async Task<bool> UpdateAdminUserAsync(string userName, AdminDto user)
+    {
+        var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
+
+        existingUser!.Name = user.userName;
+        existingUser.Email = user.email;
 
         int result = await _dbContext.SaveChangesAsync();
 
@@ -39,5 +56,23 @@ public class UserRepository(TicketingAppDBContext _dbContext) : IUserRepository
     public Task<bool> UpdateUserDetailsAsync(UserDetails userDetails)
     {
         throw new NotImplementedException();
+    }
+    public async Task<string> GetHashedPasswordAsync(string user)
+    {
+        var result = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == user);
+
+        string password = result.Password;
+
+        return password;
+    }
+    public async Task<bool> UpdatePasswordAsync(string userName, string newPassword)
+    {
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
+
+        user.Password = newPassword;
+
+        var result = await _dbContext.SaveChangesAsync();
+
+        return result >= 1 ? true : false;
     }
 }
