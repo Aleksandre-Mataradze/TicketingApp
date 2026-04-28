@@ -12,4 +12,5 @@ public interface IUserRepository
     public Task<bool> UpdateUserAsync(string userName, UserDto user);
     public Task<bool> UpdateAdminUserAsync(string userName, AdminDto user);
     public Task<bool> UpdatePasswordAsync(string user, string newPassword);
+    public Task<bool> changeAdminRoleAsync(string userName, bool role);
 }

@@ -1,4 +1,5 @@
-﻿using Application.DTOs;
+﻿using Application.Common;
+using Application.DTOs;
 using Application.DTOs.AdminDtos;
 using Application.Interfaces;
 using Domain.Models;
@@ -74,5 +75,22 @@ public class UserRepository(TicketingAppDBContext _dbContext) : IUserRepository
         var result = await _dbContext.SaveChangesAsync();
 
         return result >= 1 ? true : false;
+    }
+    public async Task<bool> changeAdminRoleAsync(string userName, bool role)
+    {
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
+
+        if (user == null)
+        {
+            return false;
+        }
+        else
+        {
+            user.Admin = role;
+
+            var result = await _dbContext.SaveChangesAsync();
+
+            return result >= 1 ? true : false;
+        }
     }
 }

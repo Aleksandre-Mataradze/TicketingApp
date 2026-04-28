@@ -2,6 +2,7 @@
 using Application.DTOs;
 using Application.DTOs.AdminDtos;
 using Application.DTOs.PasswordDtos;
+using Application.DTOs.UserDtos;
 using Application.Features.UserFeatures;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -68,6 +69,13 @@ public class UserController(UserFeatures userFeatures) : ControllerBase
     public async Task<Result<bool>> UpdatePasswordAsync(PasswordDto passwords)
     {
         var result = await userFeatures.UpdatePasswordAsync(User, passwords);
+
+        return result;
+    }
+    [HttpPut("assignRole")]
+    public async Task<Result<bool>> changeAdminRoleAsync([FromBody] RoleAssignmentDto data)
+    {
+        var result = await userFeatures.changeAdminRoleAsync(data);
 
         return result;
     }

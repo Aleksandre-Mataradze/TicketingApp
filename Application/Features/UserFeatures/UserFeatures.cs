@@ -2,6 +2,7 @@
 using Application.DTOs;
 using Application.DTOs.AdminDtos;
 using Application.DTOs.PasswordDtos;
+using Application.DTOs.UserDtos;
 using Application.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
@@ -128,5 +129,24 @@ public class UserFeatures(IUserRepository userRepository, IPasswordHasher<User> 
         bool result = await userRepository.UpdatePasswordAsync(existingUser.Name, existingUser.Password);
 
         return Result<bool>.Ok(result);
+    }
+    public async Task<Result<bool>> changeAdminRoleAsync(RoleAssignmentDto data)
+    {
+        if (data.roleName == "Admin")
+        {
+            var result = await userRepository.changeAdminRoleAsync(data.userName, true);
+
+            return Result<bool>.Ok(result);
+        }
+        else if (data.roleName == "User")
+        {
+            var result = await userRepository.changeAdminRoleAsync(data.userName, false);
+
+            return Result<bool>.Ok(result);
+        }
+        else
+        {
+            return Result<bool>.Fail("Failed to change a role");
+        }
     }
 }
