@@ -18,4 +18,5 @@ public class TicketingAppDBContext : DbContext
     public DbSet<Event> Events { get; set; }
     public DbSet<Venue> Venues { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
+    public DbSet<VenueRating> VenueRatings { get; set; }
 }
